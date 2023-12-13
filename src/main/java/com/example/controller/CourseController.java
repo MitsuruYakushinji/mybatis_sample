@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.entity.Course;
 import com.example.form.CourseForm;
@@ -26,8 +27,11 @@ public class CourseController {
     }
 
     @GetMapping("/list")
-    public String index(Model model,@ModelAttribute CourseForm courseForm) {
-        List<Course> courses = this.courseService.findAll();
+    public String index(Model model,
+    		@ModelAttribute CourseForm courseForm,
+    		@RequestParam(value = "courseId", required = false) Integer courseId,
+    		@RequestParam(value = "courseName", required = false) String courseName) {
+        List<Course> courses = this.courseService.findAll(courseId, courseName);
         model.addAttribute("courses", courses);
         return "index";
     }
@@ -49,6 +53,12 @@ public class CourseController {
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, @ModelAttribute CourseForm courseForm) {
     	this.courseService.update(id, courseForm.getName());
+    	return "redirect:/course/list";
+    }
+    
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+    	this.courseService.deleteById(id);
     	return "redirect:/course/list";
     }
 }

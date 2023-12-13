@@ -17,8 +17,8 @@ public class CourseService {
 		this.courseMapper = courseMapper;
 	}
 	
-	public List<Course> findAll(){
-		return this.courseMapper.findAll();
+	public List<Course> findAll(Integer id, String name){
+		return this.courseMapper.findAll(id, name);
 	}
 	
 	public void insert(String name) {
@@ -36,6 +36,10 @@ public class CourseService {
 		course.setId(id);
 		course.setName(name);
 		this.courseMapper.update(course);
+	}
+	
+	public void deleteById(Integer id) {
+		this.courseMapper.deleteById(id);
 	}
 
 }
