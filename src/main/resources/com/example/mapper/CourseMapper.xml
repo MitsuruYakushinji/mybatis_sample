@@ -10,6 +10,10 @@
             <id column="CD_ID" property="id"/>
             <result column="DESCRIPTION" property="description"/>
         </association>
+        <collection property="chapters" ofType="com.example.entity.Chapter">
+        	<id column="CH_ID" property="id"/>
+        	<result column="CH_NAME" property="name"/>
+        </collection>
     </resultMap>
 
     <select id="findAll" resultMap="courseMap">
@@ -37,12 +41,18 @@
     		,C.NAME
     		,CD.ID AS CD_ID
     		,CD.DESCRIPTION
+    		,CH.ID AS CH_ID
+    		,CH.NAME AS CH_NAME
     	FROM
     		COURSES C
     	INNER JOIN
     		COURSE_DETAILS CD
     	ON
     		C.ID = CD.COURSES_ID
+    	INNER JOIN
+    		CHAPTERS CH
+    	ON
+    		C.ID = CH.COURSES_ID
     	WHERE
     		C.ID = #{id}
     </select>
@@ -55,19 +65,3 @@
     	DELETE FROM COURSES WHERE ID = #{id}
     </delete>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
